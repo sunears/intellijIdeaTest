@@ -3,14 +3,49 @@ package org.sunears;
 import com.hankcs.hanlp.HanLP;
 import com.hankcs.hanlp.dictionary.py.Pinyin;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.*;
 import java.util.List;
 
 /**
  * Created by sunears on 16/8/27.
  */
-public class UIAddPy {
+public class UIAddPy extends JFrame implements ActionListener {
     public static String footer="</div></body></html>";
+    JButton open=null;
+
+    public UIAddPy(){
+        JPanel panel=(JPanel)this.getContentPane();
+        panel.setLayout(new BorderLayout());
+        open=new JButton("请选择文件");
+        panel.add(open,BorderLayout.NORTH);
+        this.setTitle("加拼音工具0.1");
+        this.setBounds(400, 200, 600, 300);
+        this.setVisible(true);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        open.addActionListener(this);
+    }
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        // TODO Auto-generated method stub
+        JFileChooser jfc=new JFileChooser();
+        jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+        jfc.showDialog(new JLabel(), "选择");
+        File file=jfc.getSelectedFile();
+        if(file!=null) {
+            if (file.isDirectory()) {
+                System.out.println("文件夹:" + file.getAbsolutePath());
+            } else if (file.isFile()) {
+                System.out.println("文件:" + file.getAbsolutePath());
+            }
+            System.out.println(jfc.getSelectedFile().getName());
+        }
+    }
+
+
     public static String getPy(String text){
         String reText="";
         String py="";
@@ -23,10 +58,8 @@ public class UIAddPy {
         }
         return  reText;
     }
-    public static void main(String args[]){
-        String filepath= "1.txt";
-        String outFilePath="out.html";
-        String fhpath="header.txt";
+    public void readAndWrite(String filepath,String outFilePath,String fhpath){
+
         try{
 
             File fh=new File(fhpath);
@@ -70,6 +103,11 @@ public class UIAddPy {
         catch (Exception e){
             System.out.println(e.toString());
         }
-
+    }
+    public static void main(String args[]){
+        String filepath= "1.txt";
+        String outFilePath="out.html";
+        String fhpath="header.txt";
+        new UIAddPy();
     }
 }
