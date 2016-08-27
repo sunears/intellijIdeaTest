@@ -85,7 +85,9 @@ public class PinyinDictionary
 
     static boolean loadDat(String path)
     {
+
         ByteArray byteArray = ByteArray.createByteArray(path + Predefine.BIN_EXT);
+        logger.info("PinYinDictionary loadDat 拼音字典二进制文件路径 "+path+Predefine.BIN_EXT);
         if (byteArray == null) return false;
         int size = byteArray.nextInt();
         Pinyin[][] valueArray = new Pinyin[size][];

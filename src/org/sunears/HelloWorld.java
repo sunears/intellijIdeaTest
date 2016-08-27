@@ -22,12 +22,14 @@ public class HelloWorld {
 //       List<Term> termList1 = NLPTokenizer.segment("中国科学院计算技术研究所的宗成庆教授正在教授自然语言处理课程");
 //       System.out.println(termList1);
        HanLP.Config.enableDebug();
-       String text = "南无阿弥陀佛了知一个巴掌拍不响";
+       String text = "南无阿弥陀佛,了知一个巴掌拍不响;.";
+
        List<Pinyin> pinyinList = HanLP.convertToPinyinList(text);
        System.out.print("原文,");
        for (char c : text.toCharArray())
        {
            System.out.printf("%c", c);
+
        }
        System.out.println(text.toCharArray().length);
 
@@ -42,8 +44,8 @@ public class HelloWorld {
        for (Pinyin pinyin : pinyinList)
        {
            int i=pinyinList.indexOf(pinyin);
-           System.out.printf("%s,",
-                   pinyin.getPinyinWithToneMark() == "none"?text.toCharArray()[i]:pinyin.getPinyinWithToneMark());
+           System.out.printf("%s(%s)",
+                   text.toCharArray()[i],pinyin.getPinyinWithToneMark() == "none"?text.toCharArray()[i]:pinyin.getPinyinWithToneMark());
        }
        System.out.println(pinyinList.toArray().length);
 

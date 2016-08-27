@@ -95,13 +95,13 @@ public class GetTotalTimeFromAudio {
         String srtFormate="00:00:53,286 --> 00:00:57,164";
         String totaltime="02:45:40";
         String totalSecond=GetTotalTimeFromAudio.timeToSec(totaltime);
-        int jg=Integer.parseInt(totalSecond)/totalLines;
+        int jg=Integer.parseInt(totalSecond)/totalLines; //间隔步进
         System.out.println(totalSecond);
         System.out.println(totalLines);
         System.out.println(jg);
         int start=0;
         int end=jg;
-        int talkSpeed=1;
+        int talkSpeed=3; //平均每个字的语速以秒为单位
         String startString="";
         String endString="";
         for (int i = 0; i <totalLines ; i++) {
@@ -122,7 +122,7 @@ public class GetTotalTimeFromAudio {
                 }
                 System.out.println((i+1)+"\n"+startString+",000 --> "+endString+",000");
                 start=end+1;
-                System.out.println(tl.get(i)+"length:");
+                System.out.println(tl.get(i));
                 System.out.println();
             }
 
