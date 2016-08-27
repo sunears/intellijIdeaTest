@@ -4,6 +4,8 @@ import com.hankcs.hanlp.HanLP;
 import com.hankcs.hanlp.dictionary.py.Pinyin;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,15 +15,52 @@ import java.util.List;
 /**
  * Created by sunears on 16/8/27.
  */
-public class UIAddPy extends JFrame implements ActionListener {
+public class UIAddPy extends JFrame implements ActionListener , ChangeListener {
     public static String footer="</div></body></html>";
     JButton open=null;
-
+    JLabel label=null;
+    JProgressBar progressbar;
+    Timer timer;
+    JButton start, stop;
     public UIAddPy(){
         JPanel panel=(JPanel)this.getContentPane();
-        panel.setLayout(new BorderLayout());
+        panel.setLayout(new GridLayout(5,5,2,2));
         open=new JButton("请选择文件");
-        panel.add(open,BorderLayout.NORTH);
+
+
+        start = new JButton("start");
+        start.addActionListener(this);
+        stop = new JButton("stop");
+        stop.addActionListener(this);
+        progressbar = new JProgressBar();
+
+        progressbar.setOrientation(JProgressBar.HORIZONTAL);
+
+        progressbar.setMinimum(0);
+
+        progressbar.setMaximum(100);
+
+        progressbar.setValue(0);
+
+        progressbar.setStringPainted(true);
+
+        progressbar.addChangeListener(this);
+
+        progressbar.setPreferredSize(new Dimension(300, 20));
+
+        progressbar.setBorderPainted(true);
+
+        progressbar.setBackground(Color.pink);
+        int leave =  100-progressbar.getValue();
+        label = new JLabel("已完成：" + leave, JLabel.CENTER);
+
+
+        timer = new Timer(50, this);
+        panel.add(open);
+        panel.add(start);
+        panel.add(stop);
+        panel.add(progressbar);
+        panel.add(label);
         this.setTitle("加拼音工具0.1");
         this.setBounds(400, 200, 600, 300);
         this.setVisible(true);
@@ -30,21 +69,47 @@ public class UIAddPy extends JFrame implements ActionListener {
     }
     @Override
     public void actionPerformed(ActionEvent e) {
-        // TODO Auto-generated method stub
-        JFileChooser jfc=new JFileChooser();
-        jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-        jfc.showDialog(new JLabel(), "选择");
-        File file=jfc.getSelectedFile();
-        if(file!=null) {
-            if (file.isDirectory()) {
-                System.out.println("文件夹:" + file.getAbsolutePath());
-            } else if (file.isFile()) {
-                System.out.println("文件:" + file.getAbsolutePath());
+
+
+        if (e.getSource() == start) {
+            timer.start();
+        } else if (e.getSource() == stop) {
+            timer.stop();
+            progressbar.setValue(0);
+        } else if (e.getSource() == timer) {
+            int value = progressbar.getValue();
+            if (value < 100) {
+                value++;
+                progressbar.setValue(value);
             }
-            System.out.println(jfc.getSelectedFile().getName());
+        } else if (e.getSource()==open){
+            // TODO Auto-generated method stub
+            JFileChooser jfc=new JFileChooser();
+            jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+            jfc.showDialog(new JLabel(), "选择");
+            File file=jfc.getSelectedFile();
+            if(file!=null) {
+                if (file.isDirectory()) {
+                    System.out.println("文件夹:" + file.getAbsolutePath());
+                } else if (file.isFile()) {
+                    System.out.println("文件:" + file.getAbsolutePath());
+                }
+                System.out.println(jfc.getSelectedFile().getName());
+            }
         }
     }
+    public void stateChanged(ChangeEvent e1) {
 
+        // TODO Auto-generated method stub
+        int value = progressbar.getValue();
+//        int leave = 100 - value;
+        if (e1.getSource() == progressbar) {
+            label.setText("已完成：" + value + "%");
+        }
+
+
+
+    }
 
     public static String getPy(String text){
         String reText="";
