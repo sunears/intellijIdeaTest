@@ -17,6 +17,8 @@ import java.util.List;
  */
 public class UIAddPy extends JFrame implements ActionListener , ChangeListener {
     public static String footer="</div></body></html>";
+    public static String outFilePath="out.html";
+    public static String fhpath="header.txt";
     JButton open=null;
     JLabel label=null;
     JProgressBar progressbar;
@@ -93,6 +95,7 @@ public class UIAddPy extends JFrame implements ActionListener , ChangeListener {
                     System.out.println("文件夹:" + file.getAbsolutePath());
                 } else if (file.isFile()) {
                     System.out.println("文件:" + file.getAbsolutePath());
+                    this.readAndWrite(file.getAbsolutePath(),outFilePath,fhpath);
                 }
                 System.out.println(jfc.getSelectedFile().getName());
             }
@@ -171,8 +174,6 @@ public class UIAddPy extends JFrame implements ActionListener , ChangeListener {
     }
     public static void main(String args[]){
         String filepath= "1.txt";
-        String outFilePath="out.html";
-        String fhpath="header.txt";
         new UIAddPy();
     }
 }
